@@ -42,7 +42,7 @@ for (var i = 0; i < users.length; i++){
     (function(){
         var user = users[i];
         github.saveUserPage(username,"./output/"+user.dirName+"/profile.jpg", function(){
-            console.log("Profile Generated for " + user.name);
+            console.log("Profile Generated for " + user.name + " ("+user.dirName+")");
         });
     })();
 }

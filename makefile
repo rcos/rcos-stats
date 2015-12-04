@@ -15,3 +15,4 @@ pdf:
 
 clean:
 	rm -rf output
+	rm -f output.pdf
