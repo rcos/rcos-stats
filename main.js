@@ -17,17 +17,22 @@ for (var i = 0; i < users.length; i++){
     (function(){
         var dirName = util.normalizeName(users[i].name);
         var user = users[i];
+        user.dirName = dirName;
         try{
-            fs.mkdirSync("./output/" + dirName);
+            fs.mkdirSync("./output/" + user.dirName);
         }catch(e){
-            dirName = dirName + '2';
+            user.dirName = dirName+"2";
             try{
-                fs.mkdirSync("./output/" + dirName);
+                fs.mkdirSync("./output/" + user.dirName);
             }catch(e){
-                console.error("Could not make directory for " + user.name + " ("+dirName+")");
+                user.dirName = dirName+"3";
+                try{
+                    fs.mkdirSync("./output/" + user.dirName);
+                }catch(e){
+                    console.error("Could not make directory for " + user.name + " ("+user.dirName+")");
+                }
             }
         }
-        user.dirName = dirName;
     })();
 }
 
