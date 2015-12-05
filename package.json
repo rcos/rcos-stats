@@ -4,8 +4,15 @@
   "description": "Utilities for pulling RCOS statistics",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run main && npm run pdf",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pdf": "node pdfgen.js",
+    "main": "node main.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "pdfkit": "^0.7.1",
+    "webshot": "^0.16.0"
+  }
 }
