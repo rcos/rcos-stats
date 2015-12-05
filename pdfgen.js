@@ -17,7 +17,7 @@ for (var i = 0;i < users.length;i++){
         .fontSize(24)
         .text(user.name, 100,100)
         .fontSize(14)
-        .text(user.rcsid, 100, 120)
+        .text("Large Group/Bonus Attendance: " + user.attendance.length, 100, 124)
         .image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,150,{
             fit: [540, 400]
         });
