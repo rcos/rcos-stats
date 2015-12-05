@@ -1,4 +1,7 @@
 var webshot = require('webshot');
+var octo = require('octonode');
+var token = "5a70d65f4bf45cffc90619229586e7a1280dd5c6";
+var octoclient = octo.client(token);
 
 // Image Settings
 var webshotOptions = {
@@ -30,13 +33,34 @@ function saveUserPageNoQueue(username, outputfile, callback){
     });
 }
 
-module.exports.saveUserPage = function(username, outputfile, callback){
+function runThread(func){
     // If we've exceeded the max number of threads, delay the call
     if (queuedThreads.length > 0  || runningThreads >= maxConcurrentThreads){
-        queuedThreads.push(function(){
-            saveUserPageNoQueue(username, outputfile, callback);
-        });
-        return;
+        queuedThreads.push(func);
+    }else{
+        func();
     }
-    saveUserPageNoQueue(username, outputfile, callback);
+}
+
+module.exports.saveUserPage = function(username, outputfile, callback){
+    runThread(function(){
+        saveUserPageNoQueue(username, outputfile, callback);
+    });
+};
+
+module.exports.getCommitStrings = function(username, callback){
+    runThread(function(){
+        var ghuser = octoclient.user(username);
+    	var pushEvents = ghuser.events(['PushEvent'], function(_, pushEvents){
+            var strings = [];
+        	for (var i = 0; i < pushEvents.length;i++){
+        		var payload = pushEvents[i].payload;
+        		var commits = payload.commits;
+        		for (var u = 0; u < commits.length; u++){
+        			strings.push(commits[u].message);
+        		}
+        	}
+        	callback(strings);
+        });
+    });
 };
