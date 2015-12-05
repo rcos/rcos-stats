@@ -2,7 +2,11 @@ all: clean generate pdf
 
 users:
 	ssh root@rcos.io "mongoexport --db observatory3  --collection users  --out users.json"
-	scp root@rcos.io:users.json .
+	ssh root@rcos.io "mongoexport --db observatory3  --collection projects  --out projects.json"
+	scp root@rcos.io:projects.json .
+	ssh root@rcos.io "mongoexport --db observatory3  --collection projects  --out projects.json"
+	scp root@rcos.io:projects.json .
+
 
 run:
 	npm start

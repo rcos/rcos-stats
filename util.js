@@ -6,7 +6,6 @@ module.exports.normalizeName = function(name){
     result = sanitize(result);
     result = result.replace(" ", "-");
     result = result.replace(".", "-");
-
     if (result === ""){
         result = randomWords({ exactly: 2, join: '-' })
     }
