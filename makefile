@@ -14,7 +14,7 @@ run:
 	npm start
 
 image:
-	npm run imagegen
+	npm run imggen
 
 info:
 	npm run infogen

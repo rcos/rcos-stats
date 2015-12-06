@@ -1,7 +1,6 @@
 var github = require("./github.js");
 var fs = require("fs");
 var util = require("./util.js");
-var pdfgen = require("./pdfgen.js");
 
 // Create output directory
 try{
@@ -47,16 +46,10 @@ for (var i = 0; i < users.length; i++){
             github.saveUserPage(username,"./output/"+user.dirName+"/profile.jpg", function(){
                 console.log("Profile Generated for " + user.name + " ("+user.dirName+")");
                 count--;
-                if (count === 0){
-                    pdfgen(users);
-                }
             });
         }catch(e){
             console.error("Could not make save github for " + user.name + " ("+username+") in "+ user.dirName);
             count--;
-            if (count === 0){
-                pdfgen(users);
-            }
         }
     })();
 }
