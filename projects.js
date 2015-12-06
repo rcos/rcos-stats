@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 // Read all user data
-var projects_raw = fs.readFileSync('projects.json', 'utf8').split("\n");
+var projects_raw = fs.readFileSync('collections/projects.json', 'utf8').split("\n");
 var projects = [];
 var project_map = new Map();
 for (var i = 0;i < projects_raw.length;i++){

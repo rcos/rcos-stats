@@ -4,14 +4,17 @@
   "description": "Utilities for pulling RCOS statistics",
   "main": "main.js",
   "scripts": {
-    "start": "npm run main",
+    "start": "npm run info && npm run main",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "info": "node infogen.js",
     "pdf": "node pdfgen.js",
     "main": "node main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "csv": "^0.4.6",
+    "octonode": "^0.7.4",
     "pdfkit": "^0.7.1",
     "random-words": "0.0.1",
     "sanitize-filename": "^1.5.3",
