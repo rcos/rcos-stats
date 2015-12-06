@@ -1,5 +1,6 @@
 var github = require("./github.js");
 var users = require("./users.js");
+var posts = require("./posts.js");
 var fs = require("fs");
 
 var runningThreads = 0;
@@ -26,6 +27,7 @@ module.exports.createInfo = function(){
     begin();
 
     // Get commits for every user
+    /*
     for (var i = 0;i < users.length;i++){
         (function(user){
             github.getCommitStrings(user.github.login, function(strings){
@@ -34,6 +36,17 @@ module.exports.createInfo = function(){
             });
         })(users[i]);
         begin();
+    }*/
+
+    // Get posts/post count for each user
+    for (var i = 0; i < users.length; i++){
+        var userPosts = [];
+        for (var u = 0; u < posts.length; u++){
+            if (posts[u].author.$oid == users[i]._id.$oid){
+                userPosts.push(posts[u].content);
+            }
+        }
+        info[users[i]._id.$oid].posts = userPosts;
     }
 
     // Write the output info file on completion
