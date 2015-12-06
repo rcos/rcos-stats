@@ -4,10 +4,11 @@
   "description": "Utilities for pulling RCOS statistics",
   "main": "main.js",
   "scripts": {
-    "start": "npm run main && npm run pdf",
+    "start": "npm run imggen && npm run infogen && npm run pdfgen",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "pdf": "node pdfgen.js",
-    "main": "node main.js"
+    "pdfgen": "node pdfgen.js",
+    "infogen": "node infogen.js",
+    "imggen": "node imggen.js"
   },
   "author": "",
   "license": "ISC",
