@@ -10,7 +10,10 @@ var doc = new pdf();
 doc.pipe(fs.createWriteStream('output.pdf'));
 
 users.sort(function(a,b){
-    return a.name.localeCompare(b.name);
+    // Compare by last word in name
+    var la = a.name.split(" ").slice(-1)[0];
+    var lb = b.name.split(" ").slice(-1)[0];
+    return la.localeCompare(lb);
 });
 
 
