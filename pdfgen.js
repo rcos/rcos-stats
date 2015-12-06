@@ -69,10 +69,10 @@ for (var i = 0;i < users.length;i++){
     if (info){
         page1.text("Example Commits", 360, ypos + 24 );
         ypos += 30;
-        page1.fontSize(9);
-        for (var u = 0;u < 10 && info.commitStrings && u < info.commitStrings.length;u++, ypos += 11){
+        page1.fontSize(7);
+        for (var u = 0;u < 10 && info.commitStrings && u < info.commitStrings.length;u++, ypos += 9){
             var str = info.commitStrings[u];
-            page1.text(str.replace(/\n/g,"").substring(0,40) + (str.length > 40 ? "..." : ""), 360, ypos + 9);
+            page1.text(str.replace(/\n/g,"").substring(0,40) + (str.length > 40 ? "..." : ""), 360, ypos + 7);
         }
     }
 

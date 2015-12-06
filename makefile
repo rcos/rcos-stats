@@ -1,4 +1,4 @@
-all: clean info generate pdf
+all: clean image info pdf
 
 data:
 	ssh root@rcos.io "rm -rf collections && mkdir collections"
@@ -13,14 +13,14 @@ copy:
 run:
 	npm start
 
-info:
-	npm run info
+image:
+	npm run imagegen
 
-generate:
-	npm run main
+info:
+	npm run infogen
 
 pdf:
-	npm run pdf
+	npm run pdfgen
 
 clean:
 	rm -rf output
