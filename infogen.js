@@ -50,10 +50,10 @@ function getUserInfo(user, info){
     info.observatoryLink = "http://rcos.io/users/"+user._id.$oid+"/profile";
 
     // Get commits
-    // github.getCommitStrings(user.github.login, function(strings){
-    //     info.commitStrings = strings;
-    //     finish();
-    // });
+    github.getCommitStrings(user.github.login, function(strings){
+        info.commitStrings = strings;
+        finish();
+    });
 
     // Get bio
     info.role = user.role;
