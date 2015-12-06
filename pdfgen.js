@@ -17,17 +17,24 @@ users.sort(function(a,b){
 for (var i = 0;i < users.length;i++){
     var user = users[i];
     var info = allInfo[user._id.$oid];
-    console.log(user.name, info);
 
     // PAGE ONE HEADER
     var page1 = doc.addPage()
         .fontSize(24)
-        .text(user.name, 100,100)
-        .fontSize(14);
-    var ypos = 124;
+        .text(user.name, 50,50)
+        .fontSize(14)
+        .text(info ? info.grading : "")
+        .fontSize(9)
+        .text(info ? info.githubLink : '', {link: info.githubLink})
+        .text(info ? info.observatoryLink : '', {link: info.observatoryLink});
+
+    var ypos = 82;
+
     // PAGE ONE ATTENDANCE
     page1.text("L/Attendance" + ":" + user.attendance.length, 360, ypos + 24);
-    ypos += 24;
+    page1.text("S/Attendance" + ":" + info.smallGroupAttendance, 360, ypos + 48);
+    ypos += 48;
+
     // PAGE ONE COMMITS
     if (info){
         page1.text("Example Commits", 360, ypos + 24 );
@@ -39,16 +46,37 @@ for (var i = 0;i < users.length;i++){
         }
     }
 
+    // PAGE ONE Projects
+    if (info){
+        page1.fontSize(9);
+        page1.text("Projects: " + info.projects.join(","),360, ypos + 9,{
+            height:40
+        });
+        ypos += 40;
+    }
+
     // PAGE ONE Blogs
     if (info){
         page1.fontSize(14)
-            .text("Blog Posts: " + info.postCount, 360, ypos)
-        ypos += 16;
+            .text("Blog Posts: " + info.posts.length, 360, ypos+14)
+        ypos += 24;
+        page1.fontSize(9);
+        if (info.posts.length > 0){
+            page1.text(info.posts[Math.floor(Math.random() * info.posts.length)].replace(/\n/g,''), 360, ypos + 9, {
+                height: 140
+            });
+            ypos += 140;
+        }
     }
 
+    // PAGE ONE MENTOR REVIEWS
+    if (info){
+        page1.text("Midterm Mentor Review: " + info.feedback.midtermReview, 360, ypos + 16).moveDown(1);
+        page1.text("Final Mentor Review: " + info.feedback.finalReview);
+    }
 
     // PAGE ONE GITHUB
-    page1.image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,150,{
+    page1.image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,130,{
             fit: [300, 1000]
         });
 }
