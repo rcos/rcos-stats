@@ -13,6 +13,5 @@ mkdir collections
 mongoexport --db observatory3 --collection users --out collections/users.json
 mongoexport --db observatory3 --collection projects --out collections/projects.json
 mongoexport --db observatory3 --collection classyears --out collections/classyears.json
+mongoexport --db observatory3 --collection posts --out collections/posts.json
 ```
-
-

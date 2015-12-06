@@ -11,7 +11,7 @@ var webshotOptions = {
   shotSize: {
       width: 1024, height: 'all'
   },
-  renderDelay: 200,
+  renderDelay: 1000,
   userAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
 };
 
