@@ -1,6 +1,7 @@
 var github = require("./github.js");
 var users = require("./users.js");
 var posts = require("./posts.js");
+var projects = require("./projects.js");
 var fs = require("fs");
 
 var runningThreads = 0;
@@ -38,15 +39,8 @@ module.exports.createInfo = function(){
         begin();
     }*/
 
-    // Get posts/post count for each user
-    for (var i = 0; i < users.length; i++){
-        var userPosts = [];
-        for (var u = 0; u < posts.length; u++){
-            if (posts[u].author.$oid == users[i]._id.$oid){
-                userPosts.push(posts[u].content);
-            }
-        }
-        info[users[i]._id.$oid].posts = userPosts;
+    for (var i = 0;i < users.length;i++){
+        getUserInfo(users[i], info[users[i]._id.$oid])
     }
 
     // Write the output info file on completion
@@ -55,6 +49,36 @@ module.exports.createInfo = function(){
     };
     finish();
 };
+
+function getUserInfo(user, info){
+    // Get Links
+    info.githubLink = "http://www.github.com/" + user.github.login;
+    info.observatoryLink = "http://rcos.io/users/"+user._id.$oid+"/profile";
+
+    // Get bio
+    info.role = user.role;
+
+    // Get all user projects
+    info.projects = [];
+    if (user.projects){
+        for (var i = 0; i < user.projects.length; i++){
+            for (var u = 0; u < projects.length;u++){
+                if (user.projects[i].$oid == projects[u]._id.$oid){
+                    info.projects.push(projects[u].name);
+                }
+            }
+        }
+    }
+
+    // Get posts
+    var userPosts = [];
+    for (var u = 0; u < posts.length; u++){
+        if (posts[u].author.$oid == user._id.$oid){
+            userPosts.push(posts[u].content);
+        }
+    }
+    info.posts = userPosts;
+}
 
 if (!module.parent){
     module.exports.createInfo();

@@ -33,11 +33,19 @@ for (var i = 0;i < users.length;i++){
         page1.text("Example Commits", 360, ypos + 24 );
         ypos += 30;
         page1.fontSize(9);
-        for (var u = 0;u < 10 && u < info.commitStrings.length;u++, ypos += 11){
+        for (var u = 0;u < 10 && info.commitStrings && u < info.commitStrings.length;u++, ypos += 11){
             var str = info.commitStrings[u];
             page1.text(str.replace(/\n/g,"").substring(0,40) + (str.length > 40 ? "..." : ""), 360, ypos + 9);
         }
     }
+
+    // PAGE ONE Blogs
+    if (info){
+        page1.fontSize(14)
+            .text("Blog Posts: " + info.postCount, 360, ypos)
+        ypos += 16;
+    }
+
 
     // PAGE ONE GITHUB
     page1.image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,150,{
