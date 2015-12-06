@@ -2,6 +2,8 @@ var github = require("./github.js");
 var users = require("./users.js");
 var posts = require("./posts.js");
 var projects = require("./projects.js");
+var smallgroup = require('./smallgroup.js');
+var feedback = require('./feedback.js');
 var fs = require("fs");
 
 var runningThreads = 0;
@@ -17,43 +19,41 @@ function finish(){
 }
 
 module.exports.createInfo = function(){
-    // User info json object
-    var info = {};
-    for (var i = 0;i < users.length;i++){
-        info[users[i]._id.$oid] = {
-            id: users[i]._id.$oid,
-            raw: users[i]
-        };
-    }
-    begin();
+    smallgroup.loadInfo(function(){
+        feedback.loadInfo(function(){
+            // User info json object
+            var info = {};
+            for (var i = 0;i < users.length;i++){
+                info[users[i]._id.$oid] = {
+                    id: users[i]._id.$oid,
+                    raw: users[i]
+                };
+            }
+            begin();
 
-    // Get commits for every user
-    /*
-    for (var i = 0;i < users.length;i++){
-        (function(user){
-            github.getCommitStrings(user.github.login, function(strings){
-                info[user._id.$oid].commitStrings = strings;
-                finish();
-            });
-        })(users[i]);
-        begin();
-    }*/
+            for (var i = 0;i < users.length;i++){
+                getUserInfo(users[i], info[users[i]._id.$oid])
+            }
 
-    for (var i = 0;i < users.length;i++){
-        getUserInfo(users[i], info[users[i]._id.$oid])
-    }
-
-    // Write the output info file on completion
-    completionFunction = function(){
-        fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
-    };
-    finish();
+            // Write the output info file on completion
+            completionFunction = function(){
+                fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
+            };
+            finish();
+        });
+    });
 };
 
 function getUserInfo(user, info){
     // Get Links
     info.githubLink = "http://www.github.com/" + user.github.login;
     info.observatoryLink = "http://rcos.io/users/"+user._id.$oid+"/profile";
+
+    // Get commits
+    // github.getCommitStrings(user.github.login, function(strings){
+    //     info.commitStrings = strings;
+    //     finish();
+    // });
 
     // Get bio
     info.role = user.role;
@@ -78,6 +78,15 @@ function getUserInfo(user, info){
         }
     }
     info.posts = userPosts;
+
+    // Get small group attendance
+    var smallgroupInfo = smallgroup.getUserInfo(user.name, user.rcsid);
+    info.grading = smallgroupInfo.grading;
+    info.smallGroupAttendance = smallgroupInfo.attendance;
+
+    // Get feedback from mentors
+    var mentorFeedback = feedback.getUserInfo(user.name, info.projects);
+    info.feedback = mentorFeedback;
 }
 
 if (!module.parent){
