@@ -11,19 +11,22 @@ var webshotOptions = {
   shotSize: {
       width: 1024, height: 'all'
   },
+  timeout: 100000,
   renderDelay: 3000,
   userAgent: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'
 };
 
 // Concurrency Variables
-var maxConcurrentThreads = 5;
+var maxConcurrentThreads = 10;
 var runningThreads = 0;
 var queuedThreads = [];
 
 function saveUserPageNoQueue(username, outputfile, callback){
     runningThreads ++;
     // Take screenshot of github page
-    webshot("http://www.github.com/" + username, outputfile, webshotOptions, function(err){
+        console.log("starting github screenshot for "+username);
+
+    webshot("http://www.github.com/" + username + "?tab=contributions&period=monthly", outputfile, webshotOptions, function(err){
         if (err) console.log("Error: ", err);
         runningThreads --;
         if (queuedThreads.length > 0){

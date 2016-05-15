@@ -1,13 +1,14 @@
 var pdf = require("pdfkit");
 var fs = require('fs');
-var users = require('./users.js');
 var util = require("./util.js");
+var projects = require("./projects.js");
 var github = require("./github.js");
 var allInfo = require("./info.js");
 
-var doc = new pdf();
+var genpdf = function(users){
+    var doc = new pdf();
 
-doc.pipe(fs.createWriteStream('output.pdf'));
+    doc.pipe(fs.createWriteStream('output.pdf'));
 
 users.sort(function(a,b){
     // Compare by last word in name
@@ -15,7 +16,6 @@ users.sort(function(a,b){
     var lb = b.name.split(" ").slice(-1)[0];
     return la.localeCompare(lb);
 });
-
 
 for (var i = 0;i < users.length;i++){
     var user = users[i];
@@ -84,4 +84,15 @@ for (var i = 0;i < users.length;i++){
         });
 }
 
-doc.end();
+    doc.end();
+
+};
+module.exports = genpdf
+
+if (!module.parent) {
+    var users = require('./users.js');
+    for (var a = 0 ; a < users.length ; a++){
+        users[a].dirName = util.normalizeName(users[a].name)
+    }
+    genpdf(users);
+}
