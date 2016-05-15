@@ -110,9 +110,14 @@ function getUserInfo(user, info){
     user.RIN = rosterInfo.RIN;
 
     // Get small group attendance
-    var smallgroupInfo = smallgroup.getUserInfo(user.name, user.rcsid);
-    info.grading = smallgroupInfo.grading;
-    info.smallGroupAttendance = smallgroupInfo.attendance;
+    if (user.smallgroup) {
+        var smallgroupInfo = smallgroup.getUserInfo(user.smallgroup.$oid);
+        info.maxSmallGroupDays = smallgroupInfo.maxDays;
+        info.smallGroupName = smallgroupInfo.smallGroupName;
+    } else {
+        info.maxSmallGroupDays = 0;
+        info.smallGroupName = 'NO SMALL GROUP FOUND';
+    }
 
     // Get feedback from mentors
     var mentorFeedback = feedback.getUserInfo(user.name, info.projects);

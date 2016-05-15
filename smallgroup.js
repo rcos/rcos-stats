@@ -1,37 +1,36 @@
-var csv = require('csv');
 var fs = require('fs');
-
 
 var info;
 module.exports.loadInfo = function(callback){
-    csv.parse(fs.readFileSync('./collections/smallgroup.csv'), function(err, data){
-        info = [];
-        for (var i = 2; i < data.length;i++){
-            if (data.length > 10){
-                info.push({
-                    'name': data[i][0],
-                    'rcsid' : data[i][1],
-                    'grading' : data[i][8],
-                    'attendance': data[i][10]
-                });
-            }
+    var smallgroup_raw = fs.readFileSync('collections/smallgroups.json', 'utf8').split("\n");
+    smallgroups = [];
+    for (var i = 0; i < smallgroup_raw.length; i++){
+        if(smallgroup_raw[i]){
+            var smallgroup = JSON.parse(smallgroup_raw[i]);
+            smallgroups.push(smallgroup);
         }
-        callback();
-    });
+    }
+    info = smallgroups;
+    callback();
 };
 
-module.exports.getUserInfo = function(name, rcsid){
+module.exports.getUserInfo = function(smallgroupid){
     if (!info){
-        throw "CSV not yet loaded";
+        throw "Smallgroups.json not yet loaded";
     }
-    for (var i = 0;i < info.length;i++){
+
+    for (var i = 0; i < info.length; i++){
         var record = info[i];
-        if (record.name.toLowerCase() == name.toLowerCase() || (rcsid && (rcsid.toLowerCase() == rcsid))){
-            return record;
+        if (record && record._id.$oid == smallgroupid){
+            return {
+                'maxDays': record.dayCodes.length,
+                'smallGroupName': record.name
+            }
         }
     }
+
     return {
-        'grading': "NOT FOUND",
-        'attendance': "NOT FOUND"
+        'maxDays': "NO SMALLGROUP FOUND",
+        'smallGroupName': "NO SMALLGROUP FOUND"
     };
 };
