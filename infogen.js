@@ -104,14 +104,9 @@ function getUserInfo(user, info){
     info.posts = posts.getUserInfo(user._id.$oid);
 
     // Get small group attendance
-    if (user.smallgroup) {
-        var smallgroupInfo = smallgroup.getUserInfo(user.smallgroup.$oid);
-        info.maxSmallGroupDays = smallgroupInfo.maxDays;
-        info.smallGroupName = smallgroupInfo.smallGroupName;
-    } else {
-        info.maxSmallGroupDays = 0;
-        info.smallGroupName = 'NO SMALL GROUP FOUND';
-    }
+    var smallgroupInfo = smallgroup.getUserInfo(user._id.$oid);
+    info.maxSmallGroupDays = smallgroupInfo.maxDays;
+    info.smallGroupName = smallgroupInfo.name;
 
     // Get feedback from mentors
     var mentorFeedback = feedback.getUserInfo(user.name, info.projects);

@@ -7,30 +7,31 @@ module.exports.loadInfo = function(callback){
     for (var i = 0; i < smallgroup_raw.length; i++){
         if(smallgroup_raw[i]){
             var smallgroup = JSON.parse(smallgroup_raw[i]);
-            smallgroups.push(smallgroup);
+            smallgroups.push({
+              students: smallgroup.students.map((student) => student.$oid),
+              classYear: smallgroup.classYear.$oid,
+              maxDays: smallgroup.dayCodes.length,
+              name: smallgroup.name
+            });
         }
     }
     info = smallgroups;
     callback();
 };
 
-module.exports.getUserInfo = function(smallgroupid){
+module.exports.getUserInfo = function(userid){
     if (!info){
         throw "Smallgroups.json not yet loaded";
     }
 
     for (var i = 0; i < info.length; i++){
-        var record = info[i];
-        if (record && record._id.$oid == smallgroupid){
-            return {
-                'maxDays': record.dayCodes.length,
-                'smallGroupName': record.name
-            }
-        }
+      if (info[i].students.indexOf(userid) != -1){
+        return info[i];
+      }
     }
 
     return {
         'maxDays': "NO SMALLGROUP FOUND",
-        'smallGroupName': "NO SMALLGROUP FOUND"
+        'name': "NO SMALLGROUP FOUND"
     };
 };
