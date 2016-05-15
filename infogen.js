@@ -44,9 +44,9 @@ module.exports.createInfo = function(){
                         }
 
                         // Remove unrostered users
-                        for (var k in users){
-                            if (users[k].offRoster){
-                                delete users[k];
+                        for (var k in info){
+                            if (info[k].offRoster){
+                                delete info[k];
                             }
                         }
 
