@@ -1,11 +1,14 @@
+var fs = require("fs");
+
+var attendance = require("./attendance.js");
+var classYear = require("./classyear.js");
+var feedback = require('./feedback.js');
 var github = require("./github.js");
-var users = require("./users.js");
 var posts = require("./posts.js");
 var projects = require("./projects.js");
-var smallgroup = require('./smallgroup.js');
-var feedback = require('./feedback.js');
 var roster = require("./roster.js");
-var fs = require("fs");
+var smallgroup = require('./smallgroup.js');
+var users = require("./users.js");
 
 var runningThreads = 0;
 var completionFunction;
@@ -20,47 +23,52 @@ function finish(){
 }
 
 module.exports.createInfo = function(){
-    smallgroup.loadInfo(function(){
-        feedback.loadInfo(function(){
-          roster.loadInfo(()=>{
-              // User info json object
-              var info = {};
-              for (var i = 0;i < users.length;i++){
-                  info[users[i]._id.$oid] = {
-                      id: users[i]._id.$oid,
-                      raw: users[i]
-                  };
-              }
-              begin();
+    classYear.loadInfo(function(){
+        attendance.loadInfo(function(){
+            smallgroup.loadInfo(function(){
+                feedback.loadInfo(function(){
+                    roster.loadInfo(()=>{
+                        var currentClassYear = classYear.getCurrentClassYear();
+                        // User info json object
+                        var info = {};
+                        for (var i = 0;i < users.length;i++){
+                            info[users[i]._id.$oid] = {
+                                id: users[i]._id.$oid,
+                                raw: users[i]
+                            };
+                        }
+                        begin();
 
-              for (var i = 0;i < users.length;i++){
-                  getUserInfo(users[i], info[users[i]._id.$oid])
-              }
+                        for (var i = 0;i < users.length;i++){
+                            getUserInfo(users[i], info[users[i]._id.$oid], currentClassYear)
+                        }
 
-              // Remove unrostered users
-              for (var k in users){
-                if (users[k].offRoster){
-                  delete users[k];
-                }
-              }
+                        // Remove unrostered users
+                        for (var k in users){
+                            if (users[k].offRoster){
+                                delete users[k];
+                            }
+                        }
 
-              // create output directory if it doesn't exist
-              try{
-                  fs.mkdirSync("output");
-              }catch(e){
-              }
+                        // create output directory if it doesn't exist
+                        try{
+                            fs.mkdirSync("output");
+                        }catch(e){
+                        }
 
-              // Write the output info file on completion
-              completionFunction = function(){
-                  fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
-              };
-              finish();
+                        // Write the output info file on completion
+                        completionFunction = function(){
+                            fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
+                        };
+                        finish();
+                    });
+                });
             });
         });
     });
 };
 
-function getUserInfo(user, info){
+function getUserInfo(user, info, currentClassYear){
     // Get Links
     info.githubLink = "http://www.github.com/" + user.github.login;
     info.observatoryLink = "http://rcos.io/users/"+user._id.$oid+"/profile";
@@ -90,8 +98,8 @@ function getUserInfo(user, info){
     // Get roster information
     var rosterInfo = roster.getUserInfo(user.name, user.rcsid);
     if (rosterInfo == null){
-      info.offRoster = true;
-      return;
+        info.offRoster = true;
+        return;
     }
     user.rcsid = info.rcsid = rosterInfo.rcsid;
     user.requestingCredit = info.requestingCredit = rosterInfo.requesting == "credit";
@@ -107,6 +115,12 @@ function getUserInfo(user, info){
     var smallgroupInfo = smallgroup.getUserInfo(user._id.$oid);
     info.maxSmallGroupDays = smallgroupInfo.maxDays;
     info.smallGroupName = smallgroupInfo.name;
+
+    // Get attendance numbers
+    var attendanceInfo = attendance.getUserAttendance(user._id.$oid, currentClassYear);
+    info.smallGroupDays = attendanceInfo.smallGroupDays;
+    info.largeGroupDays = attendanceInfo.largeGroupDays;
+    info.bonusDays = attendanceInfo.bonusDays;
 
     // Get feedback from mentors
     var mentorFeedback = feedback.getUserInfo(user.name, info.projects);
