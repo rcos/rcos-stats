@@ -50,4 +50,4 @@ samplecsv:
 savedata:
 	rm -rf samplecollections && cp -r collections samplecollections
 	mkdir -p csvs
-	cp -f csvs/* samplecsvs
+	cp -r csvs/* samplecsvs
