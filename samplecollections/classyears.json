@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5738d4630dddc9337a5ff03b"},"updatedAt":{"$date":"2016-05-15T19:56:19.821Z"},"createdAt":{"$date":"2016-05-15T19:56:19.821Z"},"semester":"2016Spring","dayCodes":[{"date":{"$date":"2016-05-15T04:00:00.000Z"},"code":"1W2O8J","_id":{"$oid":"5738d4630dddc9337a5ff03c"},"bonusDay":false}],"displayURP":false,"current":true,"__v":0}
