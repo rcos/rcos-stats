@@ -24,11 +24,11 @@ module.exports.getUserAttendance = function(userid, currentClassYear){
     }
 
     function largeGroupFilter(a) {
-        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && !a.smallgroup && !a.bonusDay;
+        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && !a.smallgroup && !a.bonusDay && a.verified;
     }
 
     function bonusDayFilter(a) {
-        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.bonusDay;
+        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.bonusDay && a.verified;
     }
 
     var smallGroupDays = info.filter(smallGroupFilter).length;
