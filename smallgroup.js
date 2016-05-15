@@ -8,7 +8,7 @@ module.exports.loadInfo = function(callback){
         if(smallgroup_raw[i]){
             var smallgroup = JSON.parse(smallgroup_raw[i]);
             smallgroups.push({
-              students: smallgroup.students.map((student) => student.$oid),
+              students: smallgroup.students.filter((student) => student).map((student) => student.$oid),
               classYear: smallgroup.classYear.$oid,
               maxDays: smallgroup.dayCodes.length,
               name: smallgroup.name
