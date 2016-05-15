@@ -1,5 +1,5 @@
 var fs = require("fs");
-
+var util = require("./util.js");
 var attendance = require("./attendance.js");
 var classYear = require("./classyear.js");
 var feedback = require('./feedback.js');
@@ -34,7 +34,7 @@ module.exports.createInfo = function(){
                         for (var i = 0;i < users.length;i++){
                             info[users[i]._id.$oid] = {
                                 id: users[i]._id.$oid,
-                                raw: users[i]
+                                raw: users[i],
                             };
                         }
                         begin();
@@ -101,12 +101,15 @@ function getUserInfo(user, info, currentClassYear){
         info.offRoster = true;
         return;
     }
-    user.rcsid = info.rcsid = rosterInfo.rcsid;
-    user.requestingCredit = info.requestingCredit = rosterInfo.requesting == "credit";
-    user.slack = info.slack = rosterInfo.slack;
-    user.email = info.email = rosterInfo.email;
-    user.semesters = info.semesters = rosterInfo.semesters;
-    user.RIN = info.RIN = rosterInfo.RIN;
+    info.rcsid = rosterInfo.rcsid;
+    info.requestingCredit = rosterInfo.requesting == "credit";
+    info.slack = rosterInfo.slack;
+    info.project = rosterInfo.project;
+    info.email = rosterInfo.email;
+    info.semesters = rosterInfo.semesters;
+    info.RIN = rosterInfo.RIN;
+    info.dirName = util.normalizeName(user.name);
+    info.name = user.name;
 
     // Get posts
     info.posts = posts.getUserInfo(user._id.$oid);

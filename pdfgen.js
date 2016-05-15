@@ -1,33 +1,32 @@
+'use strict'
 var pdf = require("pdfkit");
 var fs = require('fs');
 var util = require("./util.js");
 var projects = require("./projects.js");
 var github = require("./github.js");
-var allInfo = require("./info.js");
 
-var genpdf = function(users){
+var genpdf = function(allInfo){
     var doc = new pdf();
 
     doc.pipe(fs.createWriteStream('output.pdf'));
 
-users.sort(function(a,b){
-    // Compare by last word in name
-    var la = a.name.split(" ").slice(-1)[0];
-    var lb = b.name.split(" ").slice(-1)[0];
-    return la.localeCompare(lb);
-});
 
-for (var i = 0;i < users.length;i++){
-    var user = users[i];
-    var info = allInfo[user._id.$oid];
+for (var key in allInfo){
+    if (!allInfo.hasOwnProperty(key)) {
+      //The current property is not a direct property of p
+      continue;
+  }
+
+    // var user = users[i];
+    var info = allInfo[key];
 
     // PAGE ONE HEADER
     var page1 = doc.addPage()
         .fontSize(24)
-        .text(user.name, 50,50)
+        .text(info.name, 50,50)
         .fontSize(14)
-        .text(info ? info.grading : "")
-        .text(info ? info.project : "")
+        .text(info && info.grading? info.grading : "No grade")
+        .text(info && info.project? info.project : "No project")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
         .text(info ? info.observatoryLink : '', {link: info.observatoryLink})
@@ -35,7 +34,7 @@ for (var i = 0;i < users.length;i++){
     var ypos = 82;
 
     // PAGE ONE ATTENDANCE
-    var attendanceLength = user.attendance?user.attendance.length:0;
+    var attendanceLength = info.attendance?info.attendance.length:0;
     var smallGroupAttendanceLength = info.maxSmallGroupDays?info.maxSmallGroupDays.length:0;
 
     page1.text("L/Attendance" + ":" + attendanceLength, 360, ypos + 24);
@@ -69,7 +68,11 @@ for (var i = 0;i < users.length;i++){
         ypos += 24;
         page1.fontSize(9);
         if (info.posts.length > 0){
-            page1.text(info.posts[Math.floor(Math.random() * info.posts.length)].replace(/\n/g,''), 360, ypos + 9, {
+            var postnum = Math.floor(Math.random() * info.posts.length)
+            ypos += 9;
+            page1.text(info.posts[postnum].title.replace(/\n/g,''), 360, ypos);
+            ypos += 9;
+            page1.text(info.posts[postnum].content.replace(/\n/g,''), 360, ypos, {
                 height: 140
             });
             ypos += 140;
@@ -99,7 +102,7 @@ for (var i = 0;i < users.length;i++){
         page1.text("Grading: "+String(info.feedback.commentsGrading)).moveDown(1);
     }
     // PAGE ONE GITHUB
-    page1.image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,130,{
+    page1.image("./output/" + info.dirName + "/profile.jpg",50,130,{
             fit: [300, 1000]
         });
 }
@@ -110,9 +113,6 @@ for (var i = 0;i < users.length;i++){
 module.exports = genpdf
 
 if (!module.parent) {
-    var users = require('./users.js');
-    for (var a = 0 ; a < users.length ; a++){
-        users[a].dirName = util.normalizeName(users[a].name)
-    }
-    genpdf(users);
+    var allInfo = require("./info.js");
+    genpdf(allInfo);
 }
