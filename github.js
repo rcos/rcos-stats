@@ -24,7 +24,7 @@ var queuedThreads = [];
 function saveUserPageNoQueue(username, outputfile, callback){
     runningThreads ++;
     // Take screenshot of github page
-        console.log("start: "+username);
+        console.log("starting github screenshot for "+username);
 
     webshot("http://www.github.com/" + username + "?tab=contributions&period=monthly", outputfile, webshotOptions, function(err){
         if (err) console.log("Error: ", err);
