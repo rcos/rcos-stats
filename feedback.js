@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var info;
 module.exports.loadInfo = function(callback){
-    csv.parse(fs.readFileSync('./collections/feedback.csv'), function(err, data){
+    csv.parse(fs.readFileSync('./csvs/feedback.csv'), function(err, data){
         info = [];
         for (var i = 2; i < data.length;i++){
             if (data.length > 3){
