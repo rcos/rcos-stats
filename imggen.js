@@ -41,7 +41,7 @@ for (var i = 0; i < users.length; i++){
     var username = users[i].github.login;
     (function(){
         var user = users[i];
-        // console.log(users[i].name, user.dirName);
+
         try{
             github.saveUserPage(username,"./output/"+user.dirName+"/profile.jpg", function(){
                 console.log("Profile Generated for " + user.name + " ("+user.dirName+")");
