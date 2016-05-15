@@ -4,6 +4,7 @@ var posts = require("./posts.js");
 var projects = require("./projects.js");
 var smallgroup = require('./smallgroup.js');
 var feedback = require('./feedback.js');
+var roster = require("./roster.js");
 var fs = require("fs");
 
 var runningThreads = 0;
@@ -21,25 +22,40 @@ function finish(){
 module.exports.createInfo = function(){
     smallgroup.loadInfo(function(){
         feedback.loadInfo(function(){
-            // User info json object
-            var info = {};
-            for (var i = 0;i < users.length;i++){
-                info[users[i]._id.$oid] = {
-                    id: users[i]._id.$oid,
-                    raw: users[i]
-                };
-            }
-            begin();
+          roster.loadInfo(()=>{
+              // User info json object
+              var info = {};
+              for (var i = 0;i < users.length;i++){
+                  info[users[i]._id.$oid] = {
+                      id: users[i]._id.$oid,
+                      raw: users[i]
+                  };
+              }
+              begin();
 
-            for (var i = 0;i < users.length;i++){
-                getUserInfo(users[i], info[users[i]._id.$oid])
-            }
+              for (var i = 0;i < users.length;i++){
+                  getUserInfo(users[i], info[users[i]._id.$oid])
+              }
 
-            // Write the output info file on completion
-            completionFunction = function(){
-                fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
-            };
-            finish();
+              // Remove unrostered users
+              for (var k in users){
+                if (users[k].offRoster){
+                  delete users[k];
+                }
+              }
+
+              // create output directory if it doesn't exist
+              try{
+                  fs.mkdirSync("output");
+              }catch(e){
+              }
+
+              // Write the output info file on completion
+              completionFunction = function(){
+                  fs.writeFileSync("output/info.json", JSON.stringify(info, null, 4));
+              };
+              finish();
+            });
         });
     });
 };
@@ -79,6 +95,19 @@ function getUserInfo(user, info){
         }
     }
     info.posts = userPosts;
+
+    // Get roster information
+    var rosterInfo = roster.getUserInfo(user.name, user.rcsid);
+    if (rosterInfo == null){
+      info.offRoster = true;
+      return;
+    }
+    user.rcsid = rosterInfo.rcsid;
+    user.requestingCredit = rosterInfo.requesting == "credit";
+    user.slack = rosterInfo.slack;
+    user.email = rosterInfo.email;
+    user.semesters = rosterInfo.semesters;
+    user.RIN = rosterInfo.RIN;
 
     // Get small group attendance
     var smallgroupInfo = smallgroup.getUserInfo(user.name, user.rcsid);
