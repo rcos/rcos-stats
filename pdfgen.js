@@ -27,6 +27,7 @@ for (var i = 0;i < users.length;i++){
         .text(user.name, 50,50)
         .fontSize(14)
         .text(info ? info.grading : "")
+        .text(info ? info.project : "")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
         .text(info ? info.observatoryLink : '', {link: info.observatoryLink})
@@ -35,7 +36,7 @@ for (var i = 0;i < users.length;i++){
 
     // PAGE ONE ATTENDANCE
     var attendanceLength = user.attendance?user.attendance.length:0;
-    var smallGroupAttendanceLength = info?info.maxSmallGroupDays.length:0;
+    var smallGroupAttendanceLength = info.maxSmallGroupDays?info.maxSmallGroupDays.length:0;
 
     page1.text("L/Attendance" + ":" + attendanceLength, 360, ypos + 24);
     page1.text("S/Attendance" + ":" + smallGroupAttendanceLength, 360, ypos + 48);

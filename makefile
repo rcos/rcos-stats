@@ -41,7 +41,7 @@ localdata:
 	mongoexport --db observatory3-dev --collection classyears --out collections/classyears.json
 	mongoexport --db observatory3-dev --collection posts --out collections/posts.json
 	mongoexport --db observatory3-dev --collection smallgroups --out collections/smallgroups.json
-	mongoexport --db observatory3 --collection attendances --out collections/attendances.json
+	mongoexport --db observatory3-dev --collection attendances --out collections/attendances.json
 
 sampledata:
 	rm -rf collections && cp -r samplecollections collections
