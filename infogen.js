@@ -87,27 +87,21 @@ function getUserInfo(user, info){
         }
     }
 
-    // Get posts
-    var userPosts = [];
-    for (var u = 0; u < posts.length; u++){
-        if (posts[u].author.$oid == user._id.$oid){
-            userPosts.push(posts[u].content);
-        }
-    }
-    info.posts = userPosts;
-
     // Get roster information
     var rosterInfo = roster.getUserInfo(user.name, user.rcsid);
     if (rosterInfo == null){
       info.offRoster = true;
       return;
     }
-    user.rcsid = rosterInfo.rcsid;
-    user.requestingCredit = rosterInfo.requesting == "credit";
-    user.slack = rosterInfo.slack;
-    user.email = rosterInfo.email;
-    user.semesters = rosterInfo.semesters;
-    user.RIN = rosterInfo.RIN;
+    user.rcsid = info.rcsid = rosterInfo.rcsid;
+    user.requestingCredit = info.requestingCredit = rosterInfo.requesting == "credit";
+    user.slack = info.slack = rosterInfo.slack;
+    user.email = info.email = rosterInfo.email;
+    user.semesters = info.semesters = rosterInfo.semesters;
+    user.RIN = info.RIN = rosterInfo.RIN;
+
+    // Get posts
+    info.posts = posts.getUserInfo(user._id.$oid);
 
     // Get small group attendance
     if (user.smallgroup) {
