@@ -74,7 +74,6 @@ for (var i = 0;i < users.length;i++){
             ypos += 140;
         }
     }
-    page1.text({ lineGap: .1 })
     // PAGE ONE MENTOR REVIEWS
     if (info && info.feedback){
         ypos +=16;
