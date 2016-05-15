@@ -35,5 +35,8 @@ localdata:
 	mongoexport --db observatory3-dev --collection posts --out collections/posts.json
 	mongoexport --db observatory3-dev --collection smallgroups --out collections/smallgroups.json
 
+savedata:
+	rm -rf samplecollections && cp -r collections samplecollections
+
 sampledata:
 	rm -rf collections && cp -r samplecollections collections
