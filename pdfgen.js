@@ -29,7 +29,7 @@ for (var i = 0;i < users.length;i++){
         .text(info ? info.grading : "")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
-        .text(info ? info.observatoryLink : '', {link: info.observatoryLink});
+        .text(info ? info.observatoryLink : '', {link: info.observatoryLink})
 
     var ypos = 82;
 
@@ -74,13 +74,29 @@ for (var i = 0;i < users.length;i++){
             ypos += 140;
         }
     }
-
     // PAGE ONE MENTOR REVIEWS
-    if (info){
-        page1.text("Midterm Mentor Review: " + info.feedback.midtermReview, 360, ypos + 16).moveDown(1);
-        page1.text("Final Mentor Review: " + info.feedback.finalReview);
+    if (info && info.feedback){
+        ypos +=16;
+        page1.text("Midterm Mentor Review: ", 360, ypos);
+        ypos +=15;
+        page1.text("Date: " + String(info.feedback.date), 370, ypos);
+        ypos +=15;
+        page1.text("Mentors: " + String(info.feedback.mentor),370, ypos);
+        ypos +=15;
+        page1.text("Members all Contribute: " + String(info.feedback.membersContributing)+"/5",370, ypos);
+        ypos +=15;
+        page1.text("Progect Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
+        ypos +=15;
+        page1.text("Meeting Expectations: " + String(info.feedback.meetingExpectations)+"/5",370, ypos);
+        ypos +=20;
+        page1.text("Comments: ",370, ypos);
+        ypos +=15;
+        page1.text("Project: "+String(info.feedback.comments),380, ypos).moveDown(1);
+        ypos +=15;
+        page1.text("Individuals: "+String(info.feedback.commentsIndividuals)).moveDown(1);
+        ypos +=15;
+        page1.text("Grading: "+String(info.feedback.commentsGrading)).moveDown(1);
     }
-
     // PAGE ONE GITHUB
     page1.image("./output/" + util.normalizeName(user.name) + "/profile.jpg",50,130,{
             fit: [300, 1000]
