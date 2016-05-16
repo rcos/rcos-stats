@@ -34,12 +34,16 @@ for (var key in allInfo){
     var ypos = 82;
 
     // PAGE ONE ATTENDANCE
-    var attendanceLength = info.attendance?info.attendance.length:0;
-    var smallGroupAttendanceLength = info.maxSmallGroupDays?info.maxSmallGroupDays.length:0;
-
-    page1.text("L/Attendance" + ":" + attendanceLength, 360, ypos + 24);
-    page1.text("S/Attendance" + ":" + smallGroupAttendanceLength, 360, ypos + 48);
-    ypos += 48;
+    page1.text("L/Attendance:" +
+               info.largeGroupDays,
+               360, ypos + 24);
+    page1.text("S/Attendance:" +
+               info.smallGroupDays + "/" + info.maxSmallGroupDays,
+               360, ypos + 48);
+    page1.text("Bonus Days:" +
+               info.bonusDays,
+               360, ypos + 72);
+    ypos += 24 * 3;
 
     // PAGE ONE COMMITS
     if (info){

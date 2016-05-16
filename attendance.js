@@ -20,7 +20,7 @@ module.exports.getUserAttendance = function(userid, currentClassYear){
     }
 
     function smallGroupFilter(a) {
-        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.smallgroup && !a.bonusDay;
+      return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.smallgroup && !a.bonusDay;
     }
 
     function largeGroupFilter(a) {
