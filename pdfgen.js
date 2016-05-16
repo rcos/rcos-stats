@@ -99,7 +99,7 @@ for (var key in allInfo){
         ypos +=15;
         page1.text("Members all Contribute: " + String(info.feedback.membersContributing)+"/5",370, ypos);
         ypos +=15;
-        page1.text("Progect Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
+        page1.text("Project Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
         ypos +=15;
         page1.text("Meeting Expectations: " + String(info.feedback.meetingExpectations)+"/5",370, ypos);
         ypos +=20;
