@@ -3,6 +3,7 @@ var randomWords = require('random-words');
 
 module.exports.normalizeName = function(name){
     if (!name){
+        // TODO deterministic hash
         result = randomWords({ exactly: 2, join: '-' })
         return result;
     }
