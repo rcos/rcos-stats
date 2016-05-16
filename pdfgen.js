@@ -37,10 +37,15 @@ for (var key in allInfo){
     var attendanceLength = info.attendance?info.attendance.length:0;
     var smallGroupAttendanceLength = info.maxSmallGroupDays?info.maxSmallGroupDays.length:0;
 
-    page1.text("L/Attendance" + ":" + attendanceLength, 360, ypos + 24);
-    page1.text("S/Attendance" + ":" + smallGroupAttendanceLength, 360, ypos + 48);
+    var maxSmallGroupDays = info.maxSmallGroupDays?info.maxSmallGroupDays:0;
+    var smallGroupName = info.smallGroupName?info.smallGroupName:"No Small Group";
+    var smallGroupDays = info.smallGroupDays?info.smallGroupDays:0;
+    var largeGroupDays = info.largeGroupDays?info.largeGroupDays:0;
+    var bonusDays = info.bonusDays?info.bonusDays:0;
+    var smallGroupAttendanceLength = info.smallGroupAttendanceLength?info.smallGroupAttendanceLength:0;
+    page1.text("L/Attendance" + ":" + largeGroupDays+" + "+bonusDays, 360, ypos + 24);
+    page1.text("S/Attendance "+smallGroupName + ":" + smallGroupAttendanceLength+"/"+maxSmallGroupDays, 360, ypos + 48);
     ypos += 48;
-
     // PAGE ONE COMMITS
     if (info){
         page1.text("Example Commits", 360, ypos + 24 );
@@ -87,9 +92,11 @@ for (var key in allInfo){
         ypos +=15;
         page1.text("Mentors: " + String(info.feedback.mentor),370, ypos);
         ypos +=15;
+        page1.text("Members: " + String(info.feedback.members),370, ypos);
+        ypos +=40;
         page1.text("Members all Contribute: " + String(info.feedback.membersContributing)+"/5",370, ypos);
         ypos +=15;
-        page1.text("Progect Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
+        page1.text("Project Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
         ypos +=15;
         page1.text("Meeting Expectations: " + String(info.feedback.meetingExpectations)+"/5",370, ypos);
         ypos +=20;
@@ -102,7 +109,8 @@ for (var key in allInfo){
         page1.text("Grading: "+String(info.feedback.commentsGrading)).moveDown(1);
     }
     // PAGE ONE GITHUB
-    page1.image("./output/" + info.dirName + "/profile.jpg",50,130,{
+    console.log(info.dirName,"output/" + info.dirName + "/profile.jpg");
+    page1.image("output/" + info.dirName + "/profile.jpg",50,130,{
             fit: [300, 1000]
         });
 }
