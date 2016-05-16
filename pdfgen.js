@@ -15,17 +15,23 @@ for (var key in allInfo){
     if (!allInfo.hasOwnProperty(key)) {
       //The current property is not a direct property of p
       continue;
-  }
+    }
 
     // var user = users[i];
     var info = allInfo[key];
+
+    // Don't print users who are not requesting credit
+    // TODO make command line option
+    if (!info.requestingCredit){
+      continue;
+    }
 
     // PAGE ONE HEADER
     var page1 = doc.addPage()
         .fontSize(24)
         .text(info.name, 50,50)
         .fontSize(14)
-        .text(info && info.grading? info.grading : "No grade")
+        .text(info && info.requestingCredit? "Credit" : "No grade")
         .text(info && info.project? info.project : "No project")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
