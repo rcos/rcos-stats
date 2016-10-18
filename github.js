@@ -1,6 +1,6 @@
 var webshot = require('webshot');
 var octo = require('octonode');
-var token = "459827cd6419a8cc6974258c9c6864e64bab1605";
+var token = "INSERT GITHUB ACCOUNT TOKEN";
 var octoclient = octo.client(token);
 
 // Image Settings
