@@ -37,7 +37,7 @@ for (var key in allInfo){
         .text(info ? info.githubLink : '', {link: info.githubLink})
         .text(info ? info.observatoryLink : '', {link: info.observatoryLink})
 
-    var ypos = 82;
+    var ypos = 62;
 
     // PAGE ONE ATTENDANCE
     ypos += 16;
@@ -81,42 +81,39 @@ for (var key in allInfo){
             .text("Blog Posts: " + info.posts.length, 360, ypos+14)
         ypos += 24;
         page1.fontSize(9);
-        if (info.posts.length > 0){
-            var postnum = Math.floor(Math.random() * info.posts.length)
-            ypos += 9;
-            page1.text(info.posts[postnum].title.replace(/\n/g,''), 360, ypos);
-            ypos += 9;
-            page1.text(info.posts[postnum].content.replace(/\n/g,''), 360, ypos, {
-                height: 140
-            });
-            ypos += 140;
-        }
     }
     // PAGE ONE MENTOR REVIEWS
-    if (info && info.feedback){
+    if (info && info.feedback && info.feedback.midtermReview){
         ypos +=16;
-        page1.text("Midterm Mentor Review: ", 360, ypos);
+        page1.fontSize(12).text("Mentor Review: "+info.feedback.midtermReview.project, 360, ypos);
+        page1.fontSize(9);
         ypos +=15;
-        page1.text("Date: " + String(info.feedback.date), 370, ypos);
-        ypos +=15;
-        page1.text("Mentors: " + String(info.feedback.mentor),370, ypos);
-        ypos +=15;
-        page1.text("Members: " + String(info.feedback.members),370, ypos);
-        ypos +=40;
-        page1.text("Members all Contribute: " + String(info.feedback.membersContributing)+"/5",370, ypos);
-        ypos +=15;
-        page1.text("Project Progress: " + String(info.feedback.projectProgress)+"/5",370, ypos);
-        ypos +=15;
-        page1.text("Meeting Expectations: " + String(info.feedback.meetingExpectations)+"/5",370, ypos);
-        ypos +=20;
-        page1.text("Comments: ",370, ypos);
-        ypos +=15;
-        page1.text("Project: "+String(info.feedback.comments),380, ypos).moveDown(1);
-        ypos +=15;
-        page1.text("Individuals: "+String(info.feedback.commentsIndividuals)).moveDown(1);
-        ypos +=15;
-        page1.text("Grading: "+String(info.feedback.commentsGrading)).moveDown(1);
+        page1.text("Mentors: " + String(info.feedback.midtermReview.mentors),370, ypos);
+        ypos +=30;
+        page1.text("Members: " + String(info.feedback.midtermReview.members),370, ypos);
+        ypos +=30;
     }
+    if (info && info.feedback && info.feedback.midtermReview){
+        page1.text("Midterm Feedback: ",370, ypos);
+        ypos +=15;
+        page1.text("Project: "+info.feedback.midtermReview.feedback ,380, ypos);
+        ypos +=50;
+        page1.text("Moorthy/Theo: " + info.feedback.midtermReview.extraFeedback ,380, ypos);
+        ypos +=50;
+        page1.text("Individual "+info.feedback.midtermReview.individualFeedback ,380, ypos);
+        ypos +=50;
+    }
+      if (info && info.feedback && info.feedback.finalReview){
+          page1.text("Final Feedback: ",370, ypos);
+          ypos +=15;
+          page1.text("Project: "+info.feedback.finalReview.feedback ,380, ypos);
+          ypos +=50;
+          page1.text("Moorthy/Theo: "+info.feedback.finalReview.extraFeedback ,380, ypos);
+          ypos +=15;
+          page1.text("Individual: "+String(info.feedback.finalReview.individualFeedback));
+          ypos +=50;
+      }
+
     // PAGE ONE GITHUB
     console.log(info.dirName,"output/" + info.dirName + "/profile.jpg");
     page1.image("output/" + info.dirName + "/profile.jpg",50,130,{

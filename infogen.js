@@ -105,7 +105,6 @@ function getUserInfo(user, info, currentClassYear){
     info.credits = rosterInfo.requesting;
     info.project = rosterInfo.project;
     info.email = rosterInfo.email;
-    info.RIN = rosterInfo.RIN;
     info.dirName = util.normalizeName(user.name);
     info.name = user.name;
 
@@ -125,7 +124,7 @@ function getUserInfo(user, info, currentClassYear){
     info.bonusDays = attendanceInfo.bonusDays;
 
     // Get feedback from mentors
-    var mentorFeedback = feedback.getUserInfo(user.name, info.projects);
+    var mentorFeedback = feedback.getUserInfo(user.name, info.project);
     info.feedback = mentorFeedback;
 }
 
