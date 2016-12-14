@@ -6,7 +6,9 @@ var users = [];
 for (var i = 0; i < users_raw.length;i++){
     if (users_raw[i]){
         var user=JSON.parse(users_raw[i]);
-        users.push(user);
+        if (user.active){
+          users.push(user);
+        }
     }
 }
 

@@ -22,16 +22,16 @@ for (var key in allInfo){
 
     // Don't print users who are not requesting credit
     // TODO make command line option
-    if (!info.requestingCredit){
-      continue;
-    }
+    // if (!info.credits){
+    //   continue;
+    // }
 
     // PAGE ONE HEADER
     var page1 = doc.addPage()
         .fontSize(24)
         .text(info.name, 50,50)
         .fontSize(14)
-        .text(info && info.requestingCredit? "Credit" : "No grade")
+        .text(info && info.credits? String(info.credits)+" credits" : "Not for credit")
         .text(info && info.project? info.project : "No project")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
@@ -40,41 +40,44 @@ for (var key in allInfo){
     var ypos = 82;
 
     // PAGE ONE ATTENDANCE
-
-    page1.text("L/Attendance:" +
+    ypos += 16;
+    page1.text("L/Attendance: " +
                info.largeGroupDays,
-               360, ypos + 24);
-    page1.text("S/Attendance:" +
-               info.smallGroupDays + "/" + info.maxSmallGroupDays,
-               360, ypos + 48);
-    page1.text("Bonus Days:" +
+               360, ypos);
+    ypos += 16;
+    page1.text("Bonus Days: " +
                info.bonusDays,
-               360, ypos + 72);
-    ypos += 24 * 3;
+               360, ypos);
 
-    // PAGE ONE COMMITS
-    if (info){
-        page1.text("Example Commits", 360, ypos + 24 );
-        ypos += 30;
-        page1.fontSize(7);
-        for (var u = 0;u < 10 && info.commitStrings && u < info.commitStrings.length;u++, ypos += 9){
-            var str = info.commitStrings[u];
-            page1.text(str.replace(/\n/g,"").substring(0,40) + (str.length > 40 ? "..." : ""), 360, ypos + 7);
-        }
-    }
+    var smallGroupName = info.smallGroupName?info.smallGroupName:"No Small Group";
+    ypos += 24;
+    page1.text("Smallgroup: " +
+               smallGroupName,
+               360, ypos);
+    ypos += 16;
+    page1.text("S/Attendance: " +
+               info.smallGroupDays + "/" + info.maxSmallGroupDays,
+               360, ypos);
+    ypos += 16;
+    page1.text("Small Bonus: " +
+               info.bonusSmallGroupDays,
+               360, ypos);
+    ypos += 24;
 
-    // PAGE ONE Projects
-    if (info){
-        page1.fontSize(9);
-        page1.text("Projects: " + info.projects.join(","),360, ypos + 9,{
-            height:40
-        });
-        ypos += 40;
-    }
+    // // PAGE ONE COMMITS
+    // if (info){
+    //     page1.text("Example Commits", 360, ypos + 24 );
+    //     ypos += 30;
+    //     page1.fontSize(7);
+    //     for (var u = 0;u < 10 && info.commitStrings && u < info.commitStrings.length;u++, ypos += 9){
+    //         var str = info.commitStrings[u];
+    //         page1.text(str.replace(/\n/g,"").substring(0,40) + (str.length > 40 ? "..." : ""), 360, ypos + 7);
+    //     }
+    // }
 
     // PAGE ONE Blogs
     if (info){
-        page1.fontSize(14)
+        page1.fontSize(12)
             .text("Blog Posts: " + info.posts.length, 360, ypos+14)
         ypos += 24;
         page1.fontSize(9);

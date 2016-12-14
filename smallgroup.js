@@ -19,13 +19,13 @@ module.exports.loadInfo = function(callback){
     callback();
 };
 
-module.exports.getUserInfo = function(userid){
+module.exports.getUserInfo = function(userid, currentClassYear){
     if (!info){
         throw "Smallgroups.json not yet loaded";
     }
 
     for (var i = 0; i < info.length; i++){
-      if (info[i].students.indexOf(userid) != -1){
+      if (info[i].classYear == currentClassYear._id.$oid && info[i].students.indexOf(userid) != -1){
         return info[i];
       }
     }
