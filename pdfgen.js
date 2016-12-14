@@ -15,17 +15,23 @@ for (var key in allInfo){
     if (!allInfo.hasOwnProperty(key)) {
       //The current property is not a direct property of p
       continue;
-  }
+    }
 
     // var user = users[i];
     var info = allInfo[key];
+
+    // Don't print users who are not requesting credit
+    // TODO make command line option
+    if (!info.requestingCredit){
+      continue;
+    }
 
     // PAGE ONE HEADER
     var page1 = doc.addPage()
         .fontSize(24)
         .text(info.name, 50,50)
         .fontSize(14)
-        .text(info && info.grading? info.grading : "No grade")
+        .text(info && info.requestingCredit? "Credit" : "No grade")
         .text(info && info.project? info.project : "No project")
         .fontSize(9)
         .text(info ? info.githubLink : '', {link: info.githubLink})
@@ -34,18 +40,18 @@ for (var key in allInfo){
     var ypos = 82;
 
     // PAGE ONE ATTENDANCE
-    var attendanceLength = info.attendance?info.attendance.length:0;
-    var smallGroupAttendanceLength = info.maxSmallGroupDays?info.maxSmallGroupDays.length:0;
 
-    var maxSmallGroupDays = info.maxSmallGroupDays?info.maxSmallGroupDays:0;
-    var smallGroupName = info.smallGroupName?info.smallGroupName:"No Small Group";
-    var smallGroupDays = info.smallGroupDays?info.smallGroupDays:0;
-    var largeGroupDays = info.largeGroupDays?info.largeGroupDays:0;
-    var bonusDays = info.bonusDays?info.bonusDays:0;
-    var smallGroupAttendanceLength = info.smallGroupAttendanceLength?info.smallGroupAttendanceLength:0;
-    page1.text("L/Attendance" + ":" + largeGroupDays+" + "+bonusDays, 360, ypos + 24);
-    page1.text("S/Attendance "+smallGroupName + ":" + smallGroupAttendanceLength+"/"+maxSmallGroupDays, 360, ypos + 48);
-    ypos += 48;
+    page1.text("L/Attendance:" +
+               info.largeGroupDays,
+               360, ypos + 24);
+    page1.text("S/Attendance:" +
+               info.smallGroupDays + "/" + info.maxSmallGroupDays,
+               360, ypos + 48);
+    page1.text("Bonus Days:" +
+               info.bonusDays,
+               360, ypos + 72);
+    ypos += 24 * 3;
+
     // PAGE ONE COMMITS
     if (info){
         page1.text("Example Commits", 360, ypos + 24 );
