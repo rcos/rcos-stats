@@ -8,15 +8,20 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "pdfgen": "node pdfgen.js",
     "infogen": "node infogen.js",
-    "imggen": "node imggen.js"
+    "imggen": "node imggen.js",
+    "status-updates": "node status-updates.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@octokit/rest": "^15.9.1",
+    "bluebird": "^3.5.1",
     "csv": "^0.4.6",
+    "dotenv": "^6.0.0",
     "octonode": "^0.7.5",
     "pdfkit": "^0.7.1",
     "random-words": "0.0.1",
+    "request": "^2.87.0",
     "sanitize-filename": "^1.6.0",
     "webshot": "^0.16.0"
   }
