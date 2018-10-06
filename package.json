@@ -11,7 +11,7 @@
     "imggen": "node imggen.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "csv": "^0.4.6",
     "octonode": "^0.7.5",
