@@ -20,7 +20,10 @@ module.exports.getUserAttendance = function(userid, currentClassYear){
     }
 
     function smallGroupFilter(a) {
-      return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.smallgroup && !a.bonusDay;
+        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.smallgroup && !a.bonusDay&& a.verified;
+    }
+    function bonusSmallGroupFilter(a) {
+        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.smallgroup && a.bonusDay && a.verified;
     }
 
     function largeGroupFilter(a) {
@@ -28,15 +31,16 @@ module.exports.getUserAttendance = function(userid, currentClassYear){
     }
 
     function bonusDayFilter(a) {
-        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && a.bonusDay && a.verified;
+        return a.user.$oid === userid && a.classYear.$oid === currentClassYear._id.$oid && !a.smallgroup && a.bonusDay && a.verified;
     }
 
     var smallGroupDays = info.filter(smallGroupFilter).length;
+    var bonusSmallGroupDays = info.filter(bonusSmallGroupFilter).length;
     var largeGroupDays = info.filter(largeGroupFilter).length;
     var bonusDays = info.filter(bonusDayFilter).length;
-
-    return {
+        return {
         'smallGroupDays': smallGroupDays,
+        'bonusSmallGroupDays': bonusSmallGroupDays,
         'largeGroupDays': largeGroupDays,
         'bonusDays': bonusDays
     }

@@ -88,7 +88,7 @@ function getUserInfo(user, info, currentClassYear){
     if (user.projects){
         for (var i = 0; i < user.projects.length; i++){
             for (var u = 0; u < projects.length;u++){
-                if (user.projects[i].$oid == projects[u]._id.$oid){
+                if (user.projects[i].$oid == projects[u]._id.$oid && projects[u].active){
                     info.projects.push(projects[u].name);
                 }
             }
@@ -102,12 +102,9 @@ function getUserInfo(user, info, currentClassYear){
         return;
     }
     info.rcsid = rosterInfo.rcsid;
-    info.requestingCredit = rosterInfo.requesting == "credit";
-    info.slack = rosterInfo.slack;
+    info.credits = rosterInfo.requesting;
     info.project = rosterInfo.project;
     info.email = rosterInfo.email;
-    info.semesters = rosterInfo.semesters;
-    info.RIN = rosterInfo.RIN;
     info.dirName = util.normalizeName(user.name);
     info.name = user.name;
 
@@ -115,18 +112,19 @@ function getUserInfo(user, info, currentClassYear){
     info.posts = posts.getUserInfo(user._id.$oid);
 
     // Get small group attendance
-    var smallgroupInfo = smallgroup.getUserInfo(user._id.$oid);
+    var smallgroupInfo = smallgroup.getUserInfo(user._id.$oid, currentClassYear);
     info.maxSmallGroupDays = smallgroupInfo.maxDays;
     info.smallGroupName = smallgroupInfo.name;
 
     // Get attendance numbers
     var attendanceInfo = attendance.getUserAttendance(user._id.$oid, currentClassYear);
     info.smallGroupDays = attendanceInfo.smallGroupDays;
+    info.bonusSmallGroupDays = attendanceInfo.bonusSmallGroupDays;
     info.largeGroupDays = attendanceInfo.largeGroupDays;
     info.bonusDays = attendanceInfo.bonusDays;
 
     // Get feedback from mentors
-    var mentorFeedback = feedback.getUserInfo(user.name, info.projects);
+    var mentorFeedback = feedback.getUserInfo(user.name, info.project);
     info.feedback = mentorFeedback;
 }
 

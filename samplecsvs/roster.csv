@@ -1,5 +1,6 @@
-Last Name,First Name,RIN,Email,M/F,Major,Requesting,Credits,Project,URP Form?,4UR Form?,,Slack,Github,How many semesters in rcos (including this one)?,Small group room
-Eagle,Jane,123456789,jane@school.edu,F,CSCI,credit,3,Swift Algorithm Club,yes,,,jane,,3,1
-Door,Samuel,123456788,door@school.edu,M,CSCI,money,,Smoothie,yes ,submitted 2/5/2016,,doors,,5,2
-Meer,Forest,123456787,meerf@school.edu,M,CSYS,credit,4,Legobot,yes,submitted 2/5/2016,,meerf,,2,1
-Oswald,Darwin,12345676,oswald@school.edu,M,CSYS,credit,3,Observatory,yes,submitted 2/5/2016,,darwin,,1,2
+First Name,Last Name,Email,Project Name,New/Repeat,Credits,4UR,Funding,Done Correctly,Year,M/F,Mentor,comments,Faculy Name,proposal?
+Aaron,Gunderson,gundea@rpi.edu,Observatory,Repeat,1,y,,y,SR,M,,,G,yes
+Kiana,McNellis,mcnelk@rpi.edu,Observatory,Repeat,4,y,,y,SR,F,,,G,yes
+Brian,Kelley,kelleb3@rpi.edu,UFDS,New,2,y,,y,SR,M,,,W,yes
+Richard,Young,youngr7@rpi.edu,YACS,Repeat,4,y,,y,SR,M,,,G,
+Severin,Ibarluzea,seveibar@gmail.com,okcollege-web-client,Repeat,4,y,,y,SR,M,,,G,

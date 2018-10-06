@@ -2,16 +2,12 @@ var csv = require('csv');
 var fs = require('fs');
 var util = require("./util.js");
 
-// 0 Timestamp
-// 1 Mentor Name
-// 2 Project Name
-// 3 Group Members
-// 4 All Members are Contributing
-// 5 Project is Making Good Progress
-// 6 Project is Meeting Expectations
-// 7 Comments on Project
-// 8 Comments on Group or Individuals in Group
-// 9 Comments to Moorthy/Goldschmidt
+// 0 Project
+// 1 Mentors
+// 2 Members
+// 3 Feedback
+// 4 Extra Feedback
+// 4 Individual Feedback
 
 var parseMembers = function(members){
   var parsed = members.split(',');
@@ -20,67 +16,77 @@ var parseMembers = function(members){
 }
 
 var info;
+var midtermInfo;
 module.exports.loadInfo = function(callback){
-    csv.parse(fs.readFileSync('./csvs/feedback.csv'), function(err, data){
+    csv.parse(fs.readFileSync('./csvs/final-review.csv'), function(err, data){
         info = [];
         for (var i = 2; i < data.length;i++){
             if (data.length > 3){
                 info.push({
-                    "date": data[i][0],
-                    "mentor": data[i][1],
-                    "project": data[i][2],
-                    "members": data[i][3],
-                    "membersParsed": parseMembers(data[i][3]),
-                    "membersContributing": data[i][4],
-                    "projectProgress": data[i][5],
-                    "meetingExpectations": data[i][6],
-                    "comments": data[i][7],
-                    "commentsIndividuals": data[i][8],
-                    "commentsGrading": data[i][9],
+                    "project": data[i][0],
+                    "mentors": data[i][1],
+                    "members": data[i][2],
+                    "feedback": data[i][3],
+                    "extraFeedback": data[i][3],
+                    "individualFeedback": data[i][4]
                 });
             }
         }
-        callback();
+        csv.parse(fs.readFileSync('./csvs/midterm-review.csv'), function(err, data){
+            midtermInfo = [];
+            for (var i = 2; i < data.length;i++){
+                if (data.length > 3){
+                    midtermInfo.push({
+                        "project": data[i][0],
+                        "mentors": data[i][1],
+                        "members": data[i][2],
+                        "feedback": data[i][3],
+                        "extraFeedback": data[i][3],
+                        "individualFeedback": data[i][4]
+                    });
+                }
+            }
+            callback();
+        });
     });
 };
 
-module.exports.getUserInfo = function(name, projects){
-    if (!info){
+module.exports.getReview = function(name, project, midterm){
+    var data;
+    if (midterm){
+      data = midtermInfo
+    }
+    else{
+      data = info
+    }
+    if (!data){
         throw "CSV not yet loaded";
     }
-    for (var i = 0;i < info.length;i++){
-        var correctRecord = false;
+    var record;
+
+    for (var i = 0;i < data.length;i++){
         var record = info[i];
-        for (var u = 0;u < record.membersParsed.length;u++){
-            var memberName = record.membersParsed[u];
-            if (memberName.toLowerCase() == name.toLowerCase()){
-                correctRecord = true;
-            }
-        }
-        if (!correctRecord){
-            // check projects
-            for (var u = 0; u < projects.length;u++){
-                if (projects[u].toLowerCase() == record.project.toLowerCase()){
-                    correctRecord = true;
-                }
-            }
-        }
-        if (correctRecord){
+        // check project
+          if (project.toLowerCase() == record.project.toLowerCase()){
             return record;
-        }
-    }
+          }
+  }
 
     return {
         "date": new Date(),
-        "mentor": "None",
         "project": "None",
+        "mentors": "None",
         "members": "None",
         "membersParsed": ["None"],
-        "membersContributing": 0,
-        "projectProgress": 0,
-        "meetingExpectations": 0,
-        "comments": "None",
-        "commentsIndividuals": "None",
-        "commentsGrading": "None",
+        "feedback": "None",
+        "extraFeedback": "None",
+        "individualFeedback": "None",
     };
+};
+module.exports.getUserInfo = function(name, project){
+  var ret = {
+    "finalReview": module.exports.getReview(name, project, false),
+    "midtermReview": module.exports.getReview(name, project, true)
+  }
+  return ret
 };

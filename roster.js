@@ -12,17 +12,13 @@ module.exports.loadInfo = function(callback){
       info = [];
       for (var i = 1; i < data.length;i++){
           info.push({
-              'lastName': data[i][headers.indexOf("last name")],
-              'firstName' : data[i][headers.indexOf("first name")],
+              'lastName': data[i][headers.indexOf("first name")],
+              'firstName' : data[i][headers.indexOf("last name")],
               'name' : data[i][headers.indexOf("first name")] + " " + data[i][headers.indexOf("last name")],
-              'RIN' : data[i][headers.indexOf("rin")],
               'email': data[i][headers.indexOf("email")],
               'rcsid': data[i][headers.indexOf("email")].split("@")[0],
-              'requesting': data[i][headers.indexOf("requesting")].toLowerCase(),
-              'project': data[i][headers.indexOf("project")],
-              'slack': data[i][headers.indexOf("slack")],
-              'room': data[i][headers.indexOf("small group room")],
-              'semesters': data[i][headers.indexOf("how many semesters in rcos (including this one)?")]
+              'requesting': data[i][headers.indexOf("credits")],
+              'project': data[i][headers.indexOf("project name")]
           });
       }
       callback();

@@ -18,6 +18,6 @@
     "pdfkit": "^0.7.1",
     "random-words": "0.0.1",
     "sanitize-filename": "^1.6.0",
-    "webshot": "^0.16.0"
+    "webshot": "^0.18.0"
   }
 }
